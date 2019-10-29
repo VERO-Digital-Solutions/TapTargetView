@@ -21,11 +21,14 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
+import android.graphics.Movie;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -36,8 +39,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimatedImageDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.SystemClock;
 import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -56,7 +61,10 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
+import java.io.FileDescriptor;
 import java.io.InputStream;
+
+import javax.xml.transform.stream.StreamSource;
 
 import androidx.annotation.Nullable;
 
@@ -102,6 +110,7 @@ public class TapTargetView extends View {
     final Paint targetCirclePulsePaint;
 
     final Bitmap hristo;
+    final Movie hristoAnimated;
 
     CharSequence title;
     @Nullable
@@ -158,6 +167,8 @@ public class TapTargetView extends View {
 
     @Nullable
     ViewOutlineProvider outlineProvider;
+
+    private long mMovieStart;
 
     public static TapTargetView showFor(Activity activity, TapTarget target) {
         return showFor(activity, target, null);
@@ -442,6 +453,8 @@ public class TapTargetView extends View {
 
         final InputStream is = getResources().openRawResource(R.raw.hristo_perfekt_2);
         hristo = BitmapFactory.decodeStream(is);
+        final InputStream is2 = getResources().openRawResource(R.raw.animated);
+        hristoAnimated = Movie.decodeStream(is2);
 
         applyTargetOptions(context);
 
@@ -718,7 +731,8 @@ public class TapTargetView extends View {
         final float[] hristoPoint = computeHristoCoords(targetBounds);
         final float hristoCenterX = (hristoPoint[0] + hristo.getWidth()) / 2;
         final float hristoCenterY = (hristoPoint[1] + hristo.getHeight()) / 2;
-        c.drawBitmap(hristo, hristoCenterX, hristoCenterY, debugPaint);
+        // c.drawBitmap(hristo, hristoCenterX, hristoCenterY, debugPaint);
+        drawGif(c, hristoCenterX, hristoCenterY, computeAnimationTime());
 
         saveCount = c.save();
         {
@@ -754,6 +768,23 @@ public class TapTargetView extends View {
         if (debug) {
             drawDebugInformation(c);
         }
+    }
+
+    private int computeAnimationTime() {
+        long now = SystemClock.uptimeMillis();
+
+        if (mMovieStart == 0) {
+            mMovieStart = now;
+        }
+        int dur = hristoAnimated.duration();
+        return (int) ((now - mMovieStart) % dur);
+    }
+
+    private void drawGif(Canvas c, float x, float y, int animationTime) {
+        c.save();
+        hristoAnimated.setTime(animationTime);
+        hristoAnimated.draw(c, x, y);
+        c.restore();
     }
 
     enum HristoPosition {
