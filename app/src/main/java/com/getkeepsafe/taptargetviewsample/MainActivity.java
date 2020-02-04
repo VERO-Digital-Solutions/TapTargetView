@@ -48,15 +48,16 @@ public class MainActivity extends AppCompatActivity {
     final TapTargetSequence sequence = new TapTargetSequence(this)
         .targets(
             // This tap target will target the back button, we just need to pass its containing toolbar
-            TapTarget.forToolbarNavigationIcon(toolbar, "This is the back button", sassyDesc).id(1),
+            TapTarget.forToolbarNavigationIcon(toolbar, "This is the back button", sassyDesc)
+                    .id(1),
             // Likewise, this tap target will target the search button
             TapTarget.forToolbarMenuItem(toolbar, R.id.search, "This is a search icon", "As you can see, it has gotten pretty dark around here...")
-                .dimColor(android.R.color.black)
-                .outerCircleColor(R.color.colorAccent)
-                .targetCircleColor(android.R.color.black)
-                .transparentTarget(true)
-                .textColor(android.R.color.black)
-                .id(2),
+                    .assistant(getResources().openRawResource(R.raw.top_right))
+                    .outerCircleColor(R.color.colorAccent)
+                    .targetCircleColor(android.R.color.black)
+                    .transparentTarget(true)
+                    .textColor(android.R.color.black)
+                    .id(2),
             // You can also target the overflow button in your toolbar
             TapTarget.forToolbarOverflow(toolbar, "This will show more options", "But they're not useful :(").id(3),
             // This tap target will target our droid buddy at the given target rect
@@ -98,9 +99,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     // You don't always need a sequence, and for that there's a single time tap target
-    final SpannableString spannedDesc = new SpannableString("This is the sample app for TapTargetView");
-    spannedDesc.setSpan(new UnderlineSpan(), spannedDesc.length() - "TapTargetView".length(), spannedDesc.length(), 0);
-    TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.fab), "Hello, world!", spannedDesc)
+    final SpannableString spannedDesc = new SpannableString("Hallo, ich bin der BauBuddy und möchte dir/Ihnen gern zeigen, wie du/Sie eine Checkliste erstellen kannst/können.");
+    TapTargetView.showFor(this, TapTarget.forView(findViewById(R.id.fab), "Hello, Wolrd!", spannedDesc)
         .cancelable(false)
         .drawShadow(true)
         .titleTextDimen(R.dimen.title_text_size)

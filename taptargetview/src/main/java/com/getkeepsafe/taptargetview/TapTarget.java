@@ -28,6 +28,8 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
+import java.io.InputStream;
+
 /**
  * Describes the properties and options for a {@link TapTargetView}.
  * <p>
@@ -49,6 +51,8 @@ public class TapTarget {
 
   Rect bounds;
   Drawable icon;
+  @Nullable
+  InputStream assistant = null;
   Typeface titleTypeface;
   Typeface descriptionTypeface;
 
@@ -423,6 +427,12 @@ public class TapTarget {
     this.targetRadius = targetRadius;
     return this;
   }
+
+  public TapTarget assistant(InputStream assistant) {
+    this.assistant = assistant;
+    return this;
+  }
+
 
   /** Return the id associated with this tap target **/
   public int id() {
