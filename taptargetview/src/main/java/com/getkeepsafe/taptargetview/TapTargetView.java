@@ -791,12 +791,12 @@ public class TapTargetView extends View {
         final float horizontalOffset = ((float) targetBounds.centerX()) / getMeasuredWidth();
         final float verticalOffset = ((float) targetBounds.centerY()) / getMeasuredHeight();
         final float totalTextHeight = getTotalTextHeight();
-        if (verticalOffset < .8) {
+        if (verticalOffset < .6) {
             // show hristo on bottom half of screen
-            return (horizontalOffset >= .5) ? HristoPosition.BOTTOM_LEFT : HristoPosition.BOTTOM_RIGHT;
+            return (horizontalOffset >= .6) ? HristoPosition.BOTTOM_LEFT : HristoPosition.BOTTOM_RIGHT;
         } else {
             // show hristo on top half of screen
-            return (horizontalOffset >= .5) ? HristoPosition.TOP_LEFT : HristoPosition.TOP_RIGHT;
+            return (horizontalOffset >= .6) ? HristoPosition.TOP_LEFT : HristoPosition.TOP_RIGHT;
         }
     }
 
@@ -804,8 +804,8 @@ public class TapTargetView extends View {
         final HristoPosition position = computeHristoPosition(targetBounds);
         final int targetX = targetBounds.centerX();
         final int targetY = targetBounds.centerY();
-        final int offsetX = hristo.getWidth() * 3;
-        final int offsetY = hristo.getHeight() * 3;
+        final int offsetX = hristo.getWidth() * 2;
+        final int offsetY = hristo.getHeight() * 2;
         switch (position) {
             case TOP_LEFT:
                 return new float[]{Math.max(targetX - offsetX, 0), Math.max(targetY - offsetY, 0)};

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     .id(1),
             // Likewise, this tap target will target the search button
             TapTarget.forToolbarMenuItem(toolbar, R.id.search, "This is a search icon", "As you can see, it has gotten pretty dark around here...")
-                    .assistant(getResources().openRawResource(R.raw.top_right))
+                    .assistant(getResources().openRawResource(R.raw.bottom_left))
                     .outerCircleColor(R.color.colorAccent)
                     .targetCircleColor(android.R.color.black)
                     .transparentTarget(true)
