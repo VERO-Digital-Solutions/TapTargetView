@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 def libname = 'TapTargetView'
 group = 'com.getkeepsafe.taptargetview'
@@ -51,26 +50,6 @@ install {
                     name 'Keepsafe'
                 }
             }
-        }
-    }
-}
-
-bintray {
-    user = project.hasProperty('bintray.user') ? project.property('bintray.user') : ''
-    key = project.hasProperty('bintray.apikey') ? project.property('bintray.apikey') : ''
-    configurations = ['archives']
-    pkg {
-        repo = 'Android'
-        name = libname
-        userOrg = 'keepsafesoftware'
-        licenses = ['Apache-2.0']
-        vcsUrl = "https://github.com/KeepSafe/${libname}.git"
-
-        version {
-            name = project.version
-            desc = project.description
-            released = new Date()
-            vcsTag = project.version
         }
     }
 }
